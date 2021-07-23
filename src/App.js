@@ -1,124 +1,182 @@
 import "./App.css";
-import {useState, useEffect, useRef} from 'react';
-
-
+import { useState, useEffect, useRef, useMemo } from "react";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
 
 function App() {
-
+  let data = useRef("");
+  let carsToRender = useRef("");
   let [cars, setCars] = useState();
+  let [carsList, setCarsList] = useState();
+  let [selectedCar, setSelectedCar] = useState();
+  let [filterSubstr, setFilterSubstr] = useState("");
+  let [sort, setSort] = useState(true);
+  let previousSelection = useRef();
 
-  useEffect(()=>{
+  let selectCar = (car, year) => {
+    console.log(selectedCar);
 
-    fetch("https://city-mobil.ru/api/cars")
-    .then((response) => response.json())
-    .then((fetchedCars) => {
-      setCars(fetchedCars)
-    })
-    .catch(() => {
-alert('error');
+    if (
+      previousSelection.current &&
+      previousSelection.current.car === car &&
+      previousSelection.current.year === year
+    ) {
+      setSelectedCar(false);
+      previousSelection.current = "";
+      return;
+    }
+
+    previousSelection.current = { car: car, year: year };
+    setSelectedCar({ car: car, year: year });
+  };
+
+  const mapList = (car, index) => {
+    return (
+      <div key={index} className="row">
+        <div className="cell">{car.mark + " " + car.model}</div>
+        {data.current.tariffs_list.map((tariff, index) => {
+          if (tariff in car["tariffs"]) {
+            return (
+              <div
+                onClick={() => {
+                  selectCar(
+                    car.mark + " " + car.model,
+                    car.tariffs[tariff].year
+                  );
+                }}
+                key={index}
+                className={"cell year"}
+              >
+                {car["tariffs"][tariff]["year"]}
+              </div>
+            );
+          } else {
+            return (
+              <div key={index} className="cell">
+                -
+              </div>
+            );
+          }
+        })}
+      </div>
+    );
+  };
+
+  const reverseList = () => {
+    let reversedList = carsToRender.current.reverse();
+    console.log(carsToRender.current);
+    setCarsList([...reversedList]);
+    setSort(!sort);
+  };
+
+  function callbackToFilter(car) {
+    return (car.mark + car.model).length >= 10;
+  }
+
+  const filterList = (e) => {
+    e.preventDefault();
+    setSelectedCar(false);
+
+    carsToRender.current = data.current.cars.filter((car) => {
+      return (car.mark + car.model)
+        .toLowerCase()
+        .includes(filterSubstr.toLowerCase());
     });
 
-    
-  },[])
+    carsToRender.current = carsToRender.current.map(mapList);
+
+    console.log(carsToRender.current);
+
+    setCarsList(carsToRender.current);
+  };
+
+  useEffect(() => {
+    fetch("https://city-mobil.ru/api/cars")
+      .then((response) => response.json())
+      .then((fetchedCars) => {
+        data.current = fetchedCars;
+        setCars(fetchedCars);
+        carsToRender.current = data.current.cars.sort().map(mapList);
+        setCarsList(carsToRender.current);
+      })
+      .catch(() => {
+        alert("error");
+      });
+  }, []);
 
   return (
     <div className="App">
-      {console.log(cars)}
       <header>Header</header>
 
       <main>
-
         <aside>Sidebar</aside>
 
         <div className="container">
-
           <div className="search">
-            <input className = "search_string" type="text" placeholder = "Поиск" />
-            <button className = "search_button">Найти</button>
+            <input
+              onKeyDown={(e) => {
+                e.key === "Enter" && filterList(e);
+              }}
+              onChange={(e) => {
+                setFilterSubstr(e.target.value);
+              }}
+              className="search_string"
+              type="text"
+              placeholder="Поиск"
+            />
+            <button
+              onClick={(e) => {
+                filterList(e);
+              }}
+              className="search_button"
+            >
+              Найти
+            </button>
           </div>
 
           <div className="table">
             <div className="table_header">
+              <div
+                onClick={() => {
+                  reverseList();
+                }}
+                className="column_header"
+              >
+                Марка и модель <span>{sort ? "A-z" : "z-A"}</span>{" "}
+              </div>
 
-              
-
-
-              <div className="column_header">Марка и модель <span></span> </div>
-
-              {cars && cars.tariffs_list.map((tariff)=>{
-                return(
-                  <div className="column_header">{tariff}</div>
-                )
-              })}
-
-            </div>
-
-            <div className="rows">
-
-        
-
-              {cars && cars.cars.map((car)=>{
-                return(
-                  <div className = 'row'>
-                <div className = 'cell'>{car.mark + ' ' + car.model}</div>
-
-                {cars && cars.tariffs_list.map((tariff)=>{
-                  if(tariff in car['tariffs']){
-                    return(
-                    <div className = 'cell'>{car['tariffs'][tariff]['year']}</div>
-                    )
-                  } else{
-                    return(
-                      <div className = 'cell'>-</div>
-                    )
-                  }
+              {cars &&
+                cars.tariffs_list.map((tariff, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        reverseList();
+                      }}
+                      className="column_header"
+                    >
+                      {tariff}
+                    </div>
+                  );
                 })}
-
-                
-
-                </div>
-                )
-              })}
-              
-              
             </div>
-
+            <SimpleBar style={{ maxHeight: 300 }}>
+              <div className="rows">{carsList}</div>
+            </SimpleBar>
           </div>
-
+          {selectedCar && (
+            <div className="selected_car">
+              Выбран автомобиль {selectedCar.car} {selectedCar.year} года
+              выпуска
+            </div>
+          )}
         </div>
-
       </main>
 
       <footer>Footer</footer>
-
     </div>
   );
 }
 
 export default App;
 
-
-      {/* <div className="row">
-                <div className="cell">Audi A6</div>
-                <div className="cell">2002</div>
-                <div className="cell">2012</div>
-                <div className="cell">2014</div>
-                <div className="cell">-</div>
-                <div className="cell">2017</div>
-              </div>
-
-              <div className="row">
-                <div className="cell">Audi A6</div>
-                <div className="cell">2002</div>
-                <div className="cell">2012</div>
-                <div className="cell">2014</div>
-                <div className="cell">-</div>
-                <div className="cell">2017</div>
-              </div> */}
-
-                            {/* <div className="column_header">Марка и модель <span></span> </div>
-              <div className="column_header">Эконом</div>
-              <div className="column_header">Комфорт</div>
-              <div className="column_header">Комфорт+</div>
-              <div className="column_header">Минивен</div>
-              <div className="column_header">Бизнес</div> */}

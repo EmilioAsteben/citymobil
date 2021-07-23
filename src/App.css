@@ -1,28 +1,24 @@
-.App{
+.App {
   display: flex;
   flex-direction: column;
-  
-
 }
 
-main{
+main {
   display: flex;
   background: rgba(185, 12, 228, 0.151);
   min-height: 100px;
   flex-grow: 1;
 }
 
-
-
-aside{
+aside {
   display: flex;
   justify-content: center;
   align-items: center;
-  width:180px;
-  background: #E4E5E6;
+  width: 180px;
+  background: #e4e5e6;
 }
 
-.container{
+.container {
   display: flex;
   padding: 25px;
   flex-direction: column;
@@ -30,124 +26,134 @@ aside{
   flex-grow: 1;
 }
 
-.search{
-  
+.search {
   display: flex;
   min-width: 60%;
   min-height: 30px;
 }
 
-.search  .search_string{
+.search .search_string {
   flex-grow: 1;
   margin-right: 10px;
-  
-    padding-left: 35px;
-    width: 300px;
-    border: 1px solid #f5f5f5;
-    font-size: 13px;
-    color: gray;
-    background-image: url('https://image.flaticon.com/icons/png/128/149/149852.png');
-    background-repeat: no-repeat;
-    background-position: -25px center;
-    background-size:15px;
-    background-origin: content-box;
-    outline: 0;
-  
+
+  padding-left: 35px;
+  width: 300px;
+  border: 1px solid #f5f5f5;
+  font-size: 13px;
+  color: gray;
+  background-image: url("https://image.flaticon.com/icons/png/128/149/149852.png");
+  background-repeat: no-repeat;
+  background-position: -25px center;
+  background-size: 15px;
+  background-origin: content-box;
+  outline: 0;
 }
 
-
-
-
-
-
-.search  .search_button{
+.search .search_button {
   position: relative;
   width: 100px;
-  
 }
 
-
-.table{
+.table {
   margin-top: 20px;
-  display: flex;
+
   min-width: 70%;
-flex-direction: column;
-align-items: flex-start;
-padding: 0px;
-background:rgba(220, 20, 60, 0.315)
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  background: rgb(255, 255, 255);
 }
 
-.table_header{
+.table_header {
   box-sizing: border-box;
   display: flex;
   width: 100%;
-flex-direction: row;
-align-items: center;
-padding: 0px;
-border-top: 1px solid #000000;
-border-left: 1px solid #000000;
-
-
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
 }
 
-.column_header{
+.column_header {
+  cursor: pointer;
   box-sizing: border-box;
-display: flex;
-justify-content: center;
-align-items: center;
-text-align: center;
-flex-basis: 150px;
-min-width: 80px;
-min-height: 60px;
-flex-grow: 1;
-left: 751px;
-top: 0px;
-border-right: 1px solid #000000;
-border-bottom: 1px solid #000000;
-
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-basis: 150px;
+  min-width: 115px;
+  min-height: 60px;
+  flex-grow: 1;
+  left: 751px;
+  top: 0px;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
 }
 
-
-
-.rows{
+.rows {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
   border-left: 1px solid #000000;
 }
-.row{
+.row {
   box-sizing: border-box;
   display: flex;
   border-bottom: 1px solid #000000;
 }
 
-.cell{
+.cell {
   box-sizing: border-box;
   flex-basis: 150px;
   min-width: 80px;
-  flex-grow:1;
+  flex-grow: 1;
   text-align: center;
   border-right: 1px solid #000000;
 }
 
+.cell.year {
+  cursor: pointer;
+}
 
+.selected_car {
+  background: gainsboro;
+  box-sizing: border-box;
+  padding: 10px;
+  margin-top: 15px;
+}
 
-header{
-  line-height: 80px;
-  height: 80px;
+header {
+  line-height: 50px;
+  height: 50px;
   width: 100%;
-  background: #F2F3F4;
+  background: #f2f3f4;
   text-align: center;
   vertical-align: middle;
 }
 
-footer{
-  line-height: 80px;
-  height: 80px;
+footer {
+  line-height: 50px;
+  align-self: flex-end;
+  height: 50px;
   width: 100%;
-  background: #D4D5D6;
+  background: #d4d5d6;
   text-align: center;
   vertical-align: middle;
+}
+
+img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  width: 14px;
+}
+
+span {
+  align-self: flex-end;
+  font-size: 10px;
+  margin: 0 8px 5px 0;
 }
