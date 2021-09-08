@@ -3,7 +3,7 @@
 Data requested from the database.
 Sorting by clicking on the column heading. Search for cars by substring. 
 
-## To get started
+## To Get started
 
 
 ### `git clone https://github.com/EmilioAsteben/taxi-cars-table.git`
@@ -11,4 +11,7 @@ Sorting by clicking on the column heading. Search for cars by substring.
 ### `yarn install`
 
 ### `yarn start`
+
+
+![demo image](https://github.com/EmilioAsteben/taxi-cars-table/blob/main/demo.png?raw=true)
 
