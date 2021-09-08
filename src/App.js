@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef} from "react";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 
@@ -69,9 +69,7 @@ function App() {
     setSort(!sort);
   };
 
-  function callbackToFilter(car) {
-    return (car.mark + car.model).length >= 10;
-  }
+
 
   const filterList = (e) => {
     e.preventDefault();
@@ -179,4 +177,3 @@ function App() {
 }
 
 export default App;
-
